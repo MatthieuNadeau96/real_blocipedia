@@ -27,7 +27,7 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
-gem 'bootstrap'
+gem 'bootstrap-sass'
 
 gem 'figaro'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -54,8 +54,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'pry-rails'
 end
-
-gem 'bootstrap-sass'
 
 gem 'pundit'
 
