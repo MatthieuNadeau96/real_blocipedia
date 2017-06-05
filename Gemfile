@@ -55,6 +55,10 @@ group :development, :test do
   gem 'pry-rails'
 end
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f793356286f9a7ec9c17fe6df0367effac43c291
 gem 'pundit'
 
 gem 'faker'
