@@ -9,13 +9,41 @@
 require 'faker'
 include Faker
 
+# Creates Users
 5.times do 
+    User.create!(
+        # name:       Faker::Name.name,
+        email:      Faker::Internet.email,
+        password:   Faker::Internet.password(8)
+    )
+end
+users = User.all
+
+# Creates Wikis
+10.times do 
     Wiki.create!(
-        title: Faker::Lorem.word,
-        body: Faker::Lorem.paragraph
+        user:       users.sample,
+        title:      Faker::Lorem.word,
+        body:       Faker::Lorem.paragraph
     )
 end
 wiki = Wiki.all
 
+# Create an admin user
+admin = User.create!(
+    # name:       'Admin User',
+    email:      'admin@example.com',
+    password:   'helloworld',
+    role:       'admin'
+)
+
+# Create a member 
+member = User.create!(
+    # name:       'Member User',
+    email:      'member@example.com',
+    password:   'helloworld'
+)
+
 puts "Seed finished"
+puts "#{User.count} users created"
 puts "#{Wiki.count} wikis created"
