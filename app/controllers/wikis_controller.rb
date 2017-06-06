@@ -3,11 +3,23 @@ class WikisController < ApplicationController
   # before_action :authorize_user, except: [:index, :show, :new, :create]
   
   def index
-    @wikis = Wiki.all
+    @wikis = Wiki.visible_to(current_user)
+    
+    if current_user.premium? || current_user.admin?
+      @wikis = Wiki.all
+    end
   end
 
   def show
     @wiki = Wiki.find(params[:id])
+    unless (@wiki.private == false) || current_user.premium? || current_user.admin?
+      flash[:alert] = "You must be a premium user to view private wikis."
+      if current_user
+        redirect_to new_charge_path
+      else
+        redirect_to new_user_registration_path
+      end
+    end
   end
 
   def new
@@ -18,6 +30,7 @@ class WikisController < ApplicationController
     @wiki = Wiki.new
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
+    @wiki.private = params[:wiki][:private]
     @wiki.user = current_user
     
     if @wiki.save
@@ -37,6 +50,7 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:id])
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
+    @wiki.private = params[:wiki][:private]
     
     if @wiki.save
       flash[:notice] = "Wiki was updated."
@@ -60,6 +74,7 @@ class WikisController < ApplicationController
   end
   
   private
+  
   
   # def authorize_user
   #   wiki = Wiki.find(params[:id])
