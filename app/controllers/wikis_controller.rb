@@ -3,10 +3,10 @@ class WikisController < ApplicationController
   # before_action :authorize_user, except: [:index, :show, :new, :create]
   
   def index
-    @wikis = Wiki.visible_to(current_user)
-    
-    if current_user.premium? || current_user.admin?
-      @wikis = Wiki.all
+    if current_user == nil
+      @wikis = Wiki.visible_to_all
+    else
+      @wikis = Wiki.visible_to_login(current_user)
     end
   end
 

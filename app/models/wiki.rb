@@ -6,7 +6,8 @@ class Wiki < ActiveRecord::Base
   
   default_scope { order('created_at DESC') }
   
-  scope :visible_to, -> (user) { user ? all : where(private: false) }
+  scope :visible_to_login, -> (user) { user.admin? || user.premium? ? all : where(private: [false, nil])}
+  scope :visible_to_all, -> {where(private: [false, nil])}
   
   def publicize
     update_attribute(:private, false)
