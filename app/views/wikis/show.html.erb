@@ -1,13 +1,12 @@
-<h1>
-    <%= @wiki.title %> <br>
-    <small>
-        submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.email %>
-    </small>
-</h1>
+<h1><%= @wiki.title %> <br></h1>
 
 <div class="row">
     <div class="col-md-8">
-        <p><%= markdown(@wiki.body) %></p>
+        <p><%= markdown(@wiki.body) %> 
+            <small> 
+            submitted <%= time_ago_in_words(@wiki.created_at) %> ago by <%= @wiki.user.email %>
+            </small>
+        </p>
     </div>
     <% if user_is_authorized_for_wiki?(@wiki) %>
         <div class="col-md-4">
