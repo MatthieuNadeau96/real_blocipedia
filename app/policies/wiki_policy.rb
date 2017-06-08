@@ -1,33 +1,14 @@
 class WikiPolicy < ApplicationPolicy
   attr_reader :user, :wiki
   
-  def index?
-    user.admin? || user.wikis.count
-  end
- 
-  def update?
-    user.present?
-  end
- 
-  def destroy?
-    user.role == 'admin' || wiki.user == user
-  end
- 
-  def new?
-   user.present?
-  end
- 
-  def create?
-   user.present?
+  def initialize(user, wiki)
+    @user = user 
+    @wiki = wiki 
   end
   
-  def show?
-    user.present? && (!wiki.private || user.admin? || wiki.user_id == user.id)
-  end
-  
-  def edit?
-   user.present?
-  end
+  # def edit?
+  # user.present?
+  # end
  
   class Scope
   attr_reader :user, :scope
@@ -37,14 +18,27 @@ class WikiPolicy < ApplicationPolicy
     @scope = scope
   end
   
-    def resolve 
-      if user.admin? || user.premium?
-        return scope.all
+    def resolve
+      wikis = []
+      if user.role == 'admin'
+        wikis = scope.all
+      elsif user.role == 'premium'
+        all_wikis = scope.all
+        all_wikis.each do |wiki|
+          if wiki.private == false || wiki.private == nil || wiki.user == user || wiki.users.include?(user)
+            wikis << wiki
+          end
+        end
       else
-        return scope.where(private: false)
+        all_wikis = scope.all
+        wikis = []
+        all_wikis.each do |wiki|
+          if wiki.private != true || wiki.collaborators.include?(user)
+            wikis << wiki 
+          end 
+        end 
       end
-
-  # def update?
-  #   user.admin? or not wiki.published?
-  # end
+      wikis 
+    end
+  end
 end

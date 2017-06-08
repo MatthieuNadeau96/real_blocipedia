@@ -1,0 +1,21 @@
+<%= form_tag collaborators_path, method: :post do %>
+  <%= text_field_tag :email %>
+  <%= hidden_field_tag :wiki_id, @wiki.id %>
+  <%= submit_tag "Add Collaborator" %> 
+<% end %>
+
+</br>
+
+<div class="container">
+  <div class="row">
+    <h4>List of Wiki Collaborators:</h4>
+    <% @wiki.collaborators.each do |collaborator| %>
+      <p>
+        <%= collaborator.user.email %>
+        <% if @wiki.user == current_user %>
+          <%= link_to "", [collaborator], method: :delete, class: 'glyphicon glyphicon-remove' %>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+</div>

@@ -6,7 +6,7 @@ class WikisController < ApplicationController
     if current_user == nil
       @wikis = Wiki.visible_to_all
     else
-      @wikis = Wiki.visible_to_login(current_user)
+      @wikis = policy_scope(Wiki)
     end
   end
 

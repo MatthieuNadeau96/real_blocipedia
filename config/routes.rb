@@ -1,19 +1,9 @@
 Rails.application.routes.draw do
 
-  get 'users/new'
-
-  get 'users/create'
-
-  get 'users/downgrade'
-
-  get 'users/index'
-
-  get 'users/show'
-
+  resources :collaborators
+  # resources :users
   resources :wikis
-  
   resources :charges, only: [:new, :create]
-  
   resources :downgrade, only: [:new, :create]
   
   post 'downgrade/create'

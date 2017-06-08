@@ -16,5 +16,19 @@
     <% end %>
 </div>
 
+<div class="container">
+    <div class="row">
+        <h4>List of Wiki Collaborators:</h4>
+        <% @wiki.collaborators.each do |collaborator| %>
+            <p>
+                <%= collaborator.user.email %> <small><em> - user ID: <%= collaborator.user.id%></em></small>
+                <% if @wiki.user.premium? || @wiki.user.admin? %>
+                    <% link_to "Remove", @collaborator, method: :delete, class: 'glyphicon glyphicon-ok' %>
+                <% end %>
+            </p>
+        <% end %>
+    </div>
+</div>
+
 
 
